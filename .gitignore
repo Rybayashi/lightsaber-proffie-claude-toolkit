@@ -1,0 +1,40 @@
+# Audio never enters this repository.
+#
+# Sound font licensing is frequently unclear -- many fonts circulate without
+# any stated origin or license. A file committed once stays in git history
+# forever, even if a later commit deletes it.
+#
+# These tools operate on YOUR card, in place. Nothing is uploaded, nothing
+# is redistributed.
+*.wav
+*.raw
+*.mp3
+*.ogg
+*.flac
+
+# Generated libraries contain transcripts of copyrighted film dialogue.
+# They belong on your machine, not in a public repo.
+sound-library.json
+sound-library.md
+classification.json
+file-inventory.json
+
+# Firmware backups belong to the user
+backup/
+*.bin
+*.hex
+
+# Python environments and caches
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Editors / OS
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store

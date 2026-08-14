@@ -1,0 +1,28 @@
+# ---------------------------------------------------------------------------
+# Most of this repository is documentation and needs NOTHING installed.
+# Read docs/ first. Install this only when you want the sound library.
+# ---------------------------------------------------------------------------
+
+# Core: transcribe spoken lines from your sound fonts (Whisper large-v3).
+# Downloads ~3 GB of model weights on first run.
+faster-whisper>=1.2
+
+# GPU acceleration, NVIDIA only. Skip these on a CPU-only machine --
+# transcription still works, just several times slower.
+nvidia-cublas-cu12
+nvidia-cudnn-cu12
+
+# ---------------------------------------------------------------------------
+# Optional: speech-vs-sound classifier (CLAP).
+#
+# Answers a question Whisper cannot: "is there a human voice in this file
+# at all?" -- useful for separating spoken quotes from Force effects.
+# Adds ~740 MB of weights plus torch. Install in a SEPARATE virtualenv if you
+# already have faster-whisper working: torch pins its own CUDA library
+# versions, which can break the CTranslate2 runtime faster-whisper uses.
+#
+#   transformers>=5.0
+#   torch
+#   librosa
+#   soundfile
+# ---------------------------------------------------------------------------
