@@ -245,13 +245,28 @@ def main() -> int:
     results = classifier.classify(paths)
     elapsed = time.time() - started
 
+    # Attach a display name that identifies the FONT, not just the effect
+    # directory, and the verdict label used in the table.
+    root = Path(args.source) if args.source else None
+    for result in results:
+        path = Path(result["file"])
+        if root is not None:
+            font, relative = split_font_path(path, root)
+            result["font"] = font
+            result["name"] = f"{font}/{relative}"
+        else:
+            result["font"] = path.parent.name
+            result["name"] = path.name
+        result["label"] = ("  ?" if not result["confident"]
+                           else ("VOICE" if result["voice"] else "   -"))
+
     print(f"{'':<7} {'FILE':<46} {'VERDICT':<9} {'CATEGORY':<12} MARGIN")
     print("-" * 92)
     for result in results:
-        path = Path(result["file"])
-        label = "  ?" if not result["confident"] else ("VOICE" if result["voice"] else "   -")
-        name = f"{path.parent.name}/{path.name}"
-        print(f"{label:<7} {name[:46]:<46} "
+        # Show font + path within the font. Using the parent directory alone
+        # would print "force/force1.wav" for every directory-layout font on the
+        # card, making the output ambiguous exactly where it matters most.
+        print(f"{result['label']:<7} {result['name'][:46]:<46} "
               f"{'voice' if result['voice'] else 'sound':<9} "
               f"{result['category']:<12} {result['margin']:.3f}")
 

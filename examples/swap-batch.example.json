@@ -1,0 +1,30 @@
+[
+  {
+    "id": "D1",
+    "description": "Luke (ROTJ) announces himself with a line he is known for",
+    "source": "card:IWLuke/quote16.wav",
+    "target": "L-Skywalker/font01.wav",
+    "backup": true
+  },
+  {
+    "id": "D2",
+    "description": "Palpatine had no speech in his announcement at all",
+    "source": "card:Emperor/force/force2.wav",
+    "target": "Emperor/font/font.wav",
+    "backup": true
+  },
+  {
+    "id": "D3",
+    "description": "New quote from outside the card (prepared beforehand)",
+    "source": "prepared/kylo-dark-side.wav",
+    "target": "Exalted/font.wav",
+    "backup": true
+  },
+  {
+    "id": "D4",
+    "description": "Adding a quote to a font that has none - nothing to back up",
+    "source": "prepared/baylan-unwise.wav",
+    "target": "Splinter/quote01.wav",
+    "backup": false
+  }
+]
