@@ -74,10 +74,31 @@ into something you can query:
    SD card              transcribe.py           search.py            batch_swap.ps1
  ~1000 .wav   ──▶   Whisper large-v3   ──▶   match on text   ──▶   atomic swap
   no index          + confidence marks       → play command        + rollback
-                            │
+                            │                       │
+                            │                       └──▶  report.py  ──▶  the whole
+                            │                                              card as a
+                            │                                              readable list
                             └──▶  classify.py  ──▶  "is there a voice here at all?"
                                     CLAP              (catches wordless sounds)
 ```
+
+Two ways to read the result. **Search** when you know roughly what you are after.
+**`report.py`** when you do not — it writes one table per font, every spoken file
+with its text, so you can skim a pack you have never heard:
+
+```
+## IWVader
+
+| File | Sec | ? | Line |
+|---|---:|:-:|---|
+| `quote09.wav` | 0.8 |  | Good. |
+| `quote13.wav` | 7.7 |  | Impressive. Most impressive. |
+| `quote15.wav` | 4.4 |  | If you only knew the power of the dark side. |
+```
+
+Doubtful transcriptions are **marked rather than dropped**. Whisper returns fluent
+sentences for audio with no speech in it, so the flag means "listen to this one
+before trusting it", not "this is wrong" — unusual but real speech gets marked too.
 
 Every step reads from the card; only the last one writes to it, and it backs up
 what it replaces.
@@ -95,7 +116,8 @@ what it replaces.
 python tools/transcribe.py --source E:/ --count-only   # scale first, no model
 python tools/transcribe.py --source E:/
 
-# 4. Search by content
+# 4. Read the whole card as a list, or search it by content
+python tools/report.py                                 # -> sound-library.md
 python tools/search.py "hello there"
 
 # 5. Change something, as a reversible batch
