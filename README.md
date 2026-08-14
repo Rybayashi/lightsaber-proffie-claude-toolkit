@@ -30,8 +30,8 @@ down does nothing, because there is no second mode to reach.
 
 And spoken lines are frequently filed as `force.wav` rather than `quote01.wav`,
 so a font can be **full of dialogue and still have an empty quote player**. On
-the card behind this repository, 32 spoken lines were sitting under `force`, and
-14 of 23 presets had no quote files at all.
+the card behind this repository, 33 files of speech were sitting under `force`
+across six presets, and 14 of 23 presets had no quote files at all.
 
 ---
 

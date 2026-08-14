@@ -83,9 +83,14 @@ The consequence: **a font can be full of dialogue and still have an empty quote
 player**, because every line is filed under a name the quote player never looks
 at.
 
-On the card that produced this document, **32 spoken lines were sitting under
-`force`** - one font alone had fourteen - while **14 of 23 presets had no quote
-files at all**.
+On the card that produced this document, **33 files of speech were sitting under
+`force`** across six presets - one font alone had fourteen - while **14 of 23
+presets had no quote files at all**.
+
+⚠️ Counting these correctly takes care. A first pass reported far more, because
+it trusted a transcription whenever the family name suggested speech - and that
+swept in hallucinations like `"Thanks for watching!"` returned for a silent
+Force effect. Check the confidence score, not just the presence of text.
 
 ## What to do about it
 
