@@ -1,7 +1,36 @@
-# lightsaber-proffie-claude-toolkit
+<div align="center">
 
-Notes and tools from rebuilding a cheap Proffieboard saber - the hardware traps
-worth knowing, and a way to find out what your sound fonts actually say.
+# 🗡️ lightsaber-proffie-claude-toolkit
+
+**Find out what your saber actually says - then change it, reversibly.**
+
+A card holds a thousand files named `quote17.wav` and no index. This transcribes
+them, makes them searchable by what is *said*, and swaps them as an atomic batch
+you can roll back. Plus the hardware traps that cost an evening each.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-e0b64a.svg)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-26%20passing-4c9a5e)
+![ProffieOS](https://img.shields.io/badge/ProffieOS-7.15-6e9b46)
+
+[**Start here**](#start-here-things-that-will-bite-you) ·
+[The loop](#the-loop) ·
+[Honest scope](#honest-scope) ·
+[Safety](SAFETY.md)
+
+</div>
+
+```console
+$ python tools/search.py "i am your father"
+
+  3.9s  IWVader/quote17.wav
+       "I am your father."
+       play IWVader/quote17.wav
+```
+
+<!-- TODO: replace the console block above with a real screenshot once one exists:
+     <img src="docs/screenshots/search-quote.png" alt="Searching sound fonts by content" width="820">
+     Best shot: a terminal running the search above, on a real card. -->
 
 > **On the saber, this reads anything and writes only to the memory card.
 > It never writes firmware.** See [SAFETY.md](SAFETY.md).
@@ -37,20 +66,21 @@ across six presets, and 14 of 23 presets had no quote files at all.
 
 ## Going further: read your own card
 
-A card holds roughly a thousand files named `quote17.wav`. Font authors do not
-document them, so the only way to find a specific line is to listen to files one
-at a time.
-
-This part transcribes the card and makes it searchable **by what is actually
-said**:
+Font authors do not document their files, so the only way to find a specific
+line is to listen to a thousand of them one at a time. This part turns the card
+into something you can query:
 
 ```
-$ python tools/search.py "i am your father"
-
-  3.9s  IWVader/quote17.wav
-       "I am your father."
-       play IWVader/quote17.wav
+   SD card              transcribe.py           search.py            batch_swap.ps1
+ ~1000 .wav   ──▶   Whisper large-v3   ──▶   match on text   ──▶   atomic swap
+  no index          + confidence marks       → play command        + rollback
+                            │
+                            └──▶  classify.py  ──▶  "is there a voice here at all?"
+                                    CLAP              (catches wordless sounds)
 ```
+
+Every step reads from the card; only the last one writes to it, and it backs up
+what it replaces.
 
 ### The loop
 
