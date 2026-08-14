@@ -72,6 +72,69 @@ speech, what you hear is a noise where you expected a line.
 
 **Nothing is broken. There is simply nothing to play.**
 
+## Two more ways to get silence, before the font is even to blame
+
+An empty quote player is the cause people never find. These two are the causes
+they find and misread, because both look exactly like "the gesture does not
+work". All three can hide behind the same symptom at once.
+
+### The gesture is not the same with the blade on and off
+
+In the Fett263 prop the quote player is reached by **different controls
+depending on blade state**:
+
+| Blade | Control that reaches the quote player |
+|---|---|
+| **Off** | triple click (`EVENT_THIRD_SAVED_CLICK_SHORT`, `MODE_OFF`) |
+| **On** | **long click** (`EVENT_CLICK_LONG`, `MODE_ON`) |
+
+Triple-clicking with the blade **on** does not reach the quote player at all -
+it calls `DoInteractiveBlast()`. You get a blaster deflection, or on some styles
+nothing audible, and it reads as "the quote gesture is broken".
+
+Worth knowing while testing: with the blade on, the same long click splits on
+blade angle. Pointing **up** past 60° starts or stops the track player instead:
+
+```cpp
+case EVENTID(BUTTON_POWER, EVENT_CLICK_LONG, MODE_ON):
+  if (fusor.angle1() > M_PI / 3) {   // blade up -> track player
+    ...
+  } else {
+    CheckQuote();                    // otherwise -> quote player
+  }
+```
+
+### The mode toggle needs a steeper angle than people assume
+
+Look again at where the toggle sits:
+
+```cpp
+if (fusor.angle1() < - M_PI / 3)  {   // more than 60 degrees below horizontal
+  force_quote_ = !force_quote_;        // only here does the mode flip
+}
+ForceQuote();                          // this just plays whatever mode is current
+```
+
+The gesture **plays** the current mode every time. It **switches** mode only if
+the blade is more than **60° below horizontal at that moment** - which is
+steeper than "angled towards the floor" and easy to under-do while sitting at a
+desk with the saber in one hand.
+
+So a font that does have quotes will still answer with a Force effect
+indefinitely, simply because the mode never flipped.
+
+One detail that compounds this: `force_quote_` is a **single flag for the whole
+saber**, not per preset. Once flipped it stays flipped as you change fonts, so
+the same gesture can behave differently on two presets tested minutes apart.
+
+### Telling the three apart
+
+| What you hear | Most likely cause |
+|---|---|
+| A Force effect, on every preset, whatever you do | mode never toggled - blade not steep enough |
+| A Force effect on **some** presets, quotes on others | the fonts that stay silent have no `quote*.wav` |
+| A blaster deflection, or nothing | triple click with the blade **on** - wrong control for that state |
+
 ## The reason this is easy to miss: speech filed as `force`
 
 Font authors do not agree on where spoken lines belong. Many packs ship quotes
