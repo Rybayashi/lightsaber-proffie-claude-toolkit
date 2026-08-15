@@ -10,7 +10,7 @@ you can roll back. Plus the hardware traps that cost an evening each.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-e0b64a.svg)](LICENSE)
 ![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-26%20passing-4c9a5e)
+![Tests](https://img.shields.io/badge/tests-33%20passing-4c9a5e)
 ![ProffieOS](https://img.shields.io/badge/ProffieOS-7.15-6e9b46)
 
 [**Start here**](#start-here-things-that-will-bite-you) ·
